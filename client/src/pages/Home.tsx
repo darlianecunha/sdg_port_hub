@@ -14,7 +14,7 @@ import { BookOpen, BarChart3, Anchor } from "lucide-react";
 import IndicatorsTab from "@/components/IndicatorsTab";
 import SimulationTab from "@/components/SimulationTab";
 
-const HERO_IMAGE = "https://d2xsxph8kpxj0f.cloudfront.net/310519663332536845/kCrcvvxBSLFdAMLFRptnkf/port-hero-D5v7qeGmWJTYvfD2dPDesA.webp";
+const HERO_IMAGE = "/port-hero.svg"; // local asset (the previous CloudFront image was hosted by Manus and is no longer served)
 
 export default function Home() {
   const [activeTab, setActiveTab] = useState("indicators");
@@ -47,7 +47,7 @@ export default function Home() {
       <div className="relative h-56 md:h-72 overflow-hidden">
         <img
           src={HERO_IMAGE}
-          alt="Sustainable Brazilian port aerial view"
+          alt="Stylised port skyline with cranes and a container ship"
           className="w-full h-full object-cover"
         />
         <div className="absolute inset-0 bg-gradient-to-r from-[#1B4F72]/85 via-[#1B4F72]/60 to-transparent" />
@@ -103,7 +103,7 @@ export default function Home() {
             <span className="font-medium text-slate-700">SDG Attributes</span> — Cunha, D.R., Costa, M.D.C., Oliveira, C.B.M., Pereira, N.N. (2025)
           </div>
           <div className="text-xs">
-            Marine Policy 181, 106841 · Federal University of Maranhão & Federal University of Fluminense
+            Marine Policy 181, 106841 · Federal University of Maranhão (UFMA) & Fluminense Federal University (UFF)
           </div>
         </div>
       </footer>

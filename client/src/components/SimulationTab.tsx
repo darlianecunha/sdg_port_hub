@@ -10,7 +10,7 @@
 
 import { useState, useMemo, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ChevronDown, ChevronRight, RotateCcw, TrendingUp, Award } from "lucide-react";
+import { ChevronDown, ChevronRight, RotateCcw, TrendingUp, Award, Download, FileJson, Printer } from "lucide-react";
 import {
   RadarChart,
   PolarGrid,
@@ -308,6 +308,58 @@ export default function SimulationTab() {
 
   const answeredCount = useMemo(() => Object.keys(scores).length, [scores]);
   const totalIndicators = SDG_DATA.reduce((sum, sdg) => sum + getAllIndicators(sdg).length, 0);
+  const unansweredCount = totalIndicators - answeredCount;
+
+  // Export: one row per indicator, with the score given (blank when not answered)
+  const buildRows = useCallback(() => {
+    const rows: { sdg: string; area: string; code: string; indicator: string; score: number | ""; max: number }[] = [];
+    SDG_DATA.forEach((sdg) => {
+      sdg.areas.forEach((area) => {
+        area.indicators.forEach((ind) => {
+          rows.push({ sdg: `SDG ${sdg.number} ${sdg.name}`, area: area.name, code: ind.code, indicator: ind.name,
+            score: ind.id in scores ? scores[ind.id] : "", max: 3 });
+        });
+      });
+    });
+    return rows;
+  }, [scores]);
+
+  const downloadBlob = (content: string, filename: string, type: string) => {
+    const blob = new Blob([content], { type });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url; a.download = filename; document.body.appendChild(a); a.click();
+    document.body.removeChild(a); URL.revokeObjectURL(url);
+  };
+
+  const stamp = () => new Date().toISOString().slice(0, 10);
+
+  const exportCSV = useCallback(() => {
+    const rows = buildRows();
+    const esc = (v: string | number) => `"${String(v).replace(/"/g, '""')}"`;
+    const lines = [["SDG", "Thematic area", "Code", "Indicator", "Score (0-3)", "Max"].map(esc).join(",")];
+    rows.forEach((r) => lines.push([r.sdg, r.area, r.code, r.indicator, r.score, r.max].map(esc).join(",")));
+    lines.push("");
+    sdgScores.forEach((s) => lines.push([`SDG ${s.sdg.number} subtotal`, "", "", "", s.current, s.max].map(esc).join(",")));
+    lines.push(["Overall", "", "", "", totalScore, TOTAL_MAX_SCORE].map(esc).join(","));
+    lines.push(["Overall %", "", "", "", totalPct.toFixed(1), ""].map(esc).join(","));
+    lines.push(["Indicators answered", "", "", "", answeredCount, totalIndicators].map(esc).join(","));
+    downloadBlob("\uFEFF" + lines.join("\n"), `sdg-attributes-assessment-${stamp()}.csv`, "text/csv;charset=utf-8");
+  }, [buildRows, sdgScores, totalScore, totalPct, answeredCount, totalIndicators]);
+
+  const exportJSON = useCallback(() => {
+    const payload = {
+      tool: "SDG Attributes, Port Sustainability Assessment Framework",
+      reference: "Cunha et al. (2025), Marine Policy 181, 106841",
+      exported_at: new Date().toISOString(),
+      scale: "0-3 per indicator; unanswered indicators count as 0 in the totals",
+      overall: { score: totalScore, max: TOTAL_MAX_SCORE, pct: Number(totalPct.toFixed(1)), label: getPerformanceLabel(totalPct).label },
+      answered: answeredCount, total_indicators: totalIndicators,
+      by_sdg: sdgScores.map((s) => ({ sdg: s.sdg.number, name: s.sdg.name, score: s.current, max: s.max, pct: Number(s.pct.toFixed(1)) })),
+      indicators: buildRows(),
+    };
+    downloadBlob(JSON.stringify(payload, null, 2), `sdg-attributes-assessment-${stamp()}.json`, "application/json");
+  }, [buildRows, sdgScores, totalScore, totalPct, answeredCount, totalIndicators]);
 
   return (
     <div className="flex flex-col lg:flex-row gap-6">
@@ -366,6 +418,23 @@ export default function SimulationTab() {
               <h3 className="text-sm font-bold text-slate-800">Overall Score</h3>
             </div>
             <ScoreGauge pct={totalPct} score={totalScore} maxScore={TOTAL_MAX_SCORE} />
+            <p className="text-[11px] text-slate-500 mt-3 leading-snug">
+              All 84 indicators weigh equally (0–3 each), so an SDG with more indicators weighs more in the overall score.
+              {unansweredCount > 0 && (
+                <> {unansweredCount} unanswered indicator{unansweredCount > 1 ? "s" : ""} currently count as 0.</>
+              )}
+            </p>
+            <div className="flex flex-wrap gap-2 mt-3">
+              <Button variant="outline" size="sm" className="text-xs flex items-center gap-1.5" onClick={exportCSV} disabled={answeredCount === 0}>
+                <Download className="w-3.5 h-3.5" /> CSV
+              </Button>
+              <Button variant="outline" size="sm" className="text-xs flex items-center gap-1.5" onClick={exportJSON} disabled={answeredCount === 0}>
+                <FileJson className="w-3.5 h-3.5" /> JSON
+              </Button>
+              <Button variant="outline" size="sm" className="text-xs flex items-center gap-1.5" onClick={() => window.print()}>
+                <Printer className="w-3.5 h-3.5" /> Print / PDF
+              </Button>
+            </div>
           </div>
 
           {/* Radar Chart */}
