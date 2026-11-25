@@ -69,17 +69,17 @@ export default function Home() {
       {/* Main Content */}
       <div className="container py-6">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="mb-6 bg-white border border-slate-200 shadow-sm p-1 h-auto rounded-xl">
+          <TabsList className="mb-6 w-full sm:w-auto bg-white border border-slate-200 shadow-sm p-1 h-auto rounded-xl">
             <TabsTrigger
               value="indicators"
-              className="flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm font-medium data-[state=active]:bg-[#1B4F72] data-[state=active]:text-white data-[state=active]:shadow-sm transition-all"
+              className="flex flex-1 sm:flex-none items-center justify-center gap-2 px-3 sm:px-5 py-2.5 rounded-lg text-sm font-medium data-[state=active]:bg-[#1B4F72] data-[state=active]:text-white data-[state=active]:shadow-sm transition-all"
             >
               <BookOpen className="w-4 h-4" />
               <span>Indicators Reference</span>
             </TabsTrigger>
             <TabsTrigger
               value="simulation"
-              className="flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm font-medium data-[state=active]:bg-[#1B4F72] data-[state=active]:text-white data-[state=active]:shadow-sm transition-all"
+              className="flex flex-1 sm:flex-none items-center justify-center gap-2 px-3 sm:px-5 py-2.5 rounded-lg text-sm font-medium data-[state=active]:bg-[#1B4F72] data-[state=active]:text-white data-[state=active]:shadow-sm transition-all"
             >
               <BarChart3 className="w-4 h-4" />
               <span>Simulation Tool</span>
