@@ -3,14 +3,26 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
-    <title>SDG Attributes — Port Sustainability Model</title>
+    <title>SDG Port Hub · SDG Attributes sustainability assessment for ports</title>
     <meta name="description" content="A sustainability assessment framework for Brazilian ports aligned with the Sustainable Development Goals (SDGs 7, 8, 9, 11, 12, 13, 14, and 17). Evaluate port sustainability performance across 84 indicators and 20 thematic dimensions." />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+    <script type="application/ld+json">
+    {"@context":"https://schema.org","@type":"SoftwareApplication","name":"SDG Port Hub: SDG Attributes sustainability assessment for ports","applicationCategory":"Research tool","operatingSystem":"Web browser","url":"https://sdg-port-hub-sable.vercel.app","identifier":"https://doi.org/10.5281/zenodo.20708457","author":[{"@type":"Person","name":"Darliane Ribeiro Cunha","identifier":"https://orcid.org/0000-0003-2548-1237"},{"@type":"Person","name":"Clóvis Bôsco Mendonça Oliveira"},{"@type":"Person","name":"Markus Dannyllo Carneiro Costa"}],"citation":"https://doi.org/10.1016/j.marpol.2025.106841","description":"Interactive tool implementing the SDG Attributes framework: 84 indicators in 20 thematic dimensions to assess port sustainability against SDGs 7, 8, 9, 11, 12, 13, 14 and 17."}
+    </script>
   </head>
   <body>
-    <div id="root"></div>
+    <div id="root">
+      <main style="max-width:760px;margin:3rem auto;padding:0 1.5rem;font-family:'DM Sans',sans-serif;line-height:1.6;color:#1f2937">
+        <h1>SDG Port Hub: sustainability assessment for ports</h1>
+        <p>SDG Port Hub implements the <strong>SDG Attributes</strong> framework, a peer-reviewed model that assesses port sustainability against the UN Sustainable Development Goals (SDGs 7, 8, 9, 11, 12, 13, 14 and 17) through <strong>84 indicators in 20 thematic dimensions</strong>. The full method is described in the article cited below.</p>
+        <h2>How to cite</h2>
+        <p>Cunha, D. R., Costa, M. D. C., Oliveira, C. B. M., &amp; Pereira, N. N. (2025). SDG attributes: A sustainability assessment framework for Brazilian ports. <em>Marine Policy</em>, 181, 106841. <a href="https://doi.org/10.1016/j.marpol.2025.106841">https://doi.org/10.1016/j.marpol.2025.106841</a></p>
+        <p>Software: Cunha, D., Oliveira, C. B. M., &amp; Costa, M. D. C. (2026). <em>Atributos ODS</em> [Software]. Zenodo. <a href="https://doi.org/10.5281/zenodo.20708457">https://doi.org/10.5281/zenodo.20708457</a></p>
+        <p>Author: <a href="https://ribeirocunha.com">Darliane Ribeiro Cunha</a>, Federal University of Maranhão (UFMA), ORCID <a href="https://orcid.org/0000-0003-2548-1237">0000-0003-2548-1237</a>.</p>
+      </main>
+    </div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
